@@ -1,192 +1,191 @@
 $(document).ready(() => {
+    // ILA KAN UTILISATEUR DEJA CONNECTÉ, REDIRECTION DIRECT VERS DASHBOARD
+    if (localStorage.getItem("username") !== null) {
+        window.location.href = "dashboard.html";
+    }
+
+    // VERIFIER SI UN EMAIL A ÉTÉ SAUVEGARDÉ (SE SOUVENIR DE MOI)
+    if (localStorage.getItem("email") !== null) {
+        $("#l-email").val(localStorage.getItem("email"));
+        $("#remember").prop("checked", true);
+    }
+
+    // ============================================================
+    //  INSCRIPTION (REGISTER)
+    // ============================================================
     $("#registerBtn").click((event) => {
-        let errors = 0
+        let errors = 0;
         // reset validation messages
-        $(".feedbak").text('')
+        $(".feedbak").text('');
         $(".formItem").removeClass('is-invalid');
 
         // Validation Nom
-        let nom = $("#r-nom")
+        let nom = $("#r-nom");
         let regexNom = /^[a-zA-Z\s]+$/;
         if (nom.val() === '') {
             $("#invalid-nom-feedbak").text('Veuillez entrer un nom');
             nom.addClass('is-invalid');
-            errors++
+            errors++;
         }
-        // regex pour valider le nom (lettres et espaces uniquement)
         else if (!regexNom.test(nom.val())) {
             $("#invalid-nom-feedbak").text('Le nom ne doit contenir que des lettres et des espaces');
             nom.addClass('is-invalid');
-            errors++
+            errors++;
         }
 
         // Validation salaire journalier
-        let salaire = $("#r-salaire")
+        let salaire = $("#r-salaire");
         if (salaire.val() === '' || Number(salaire.val()) <= 0) {
             $("#invalid-salaire-feedbak").text('Veuillez entrer un salaire journalier valide');
             salaire.addClass('is-invalid');
-            errors++
+            errors++;
         }
 
         // validation email
-        let email = $("#r-email")
+        let email = $("#r-email");
         let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (email.val() === '') {
             $("#invalid-email-feedbak").text('Veuillez entrer une adresse email');
             email.addClass('is-invalid');
-            errors++
+            errors++;
         } else if (!regexEmail.test(email.val())) {
             $("#invalid-email-feedbak").text('Veuillez entrer une adresse email valide');
             email.addClass('is-invalid');
-            errors++
-        } else if (emailExist(email.val())) {
-            $("#invalid-email-feedbak").text('Cette adresse email est déjà utilisée');
-            email.addClass('is-invalid');
-            errors++
+            errors++;
         }
 
         // validation mot de passe
-        let password = $("#r-password")
-        let passwordConfirm = $("#r-password-confirm")
+        let password = $("#r-password");
+        let confirmPassword = $("#r-password-confirm");
         if (password.val() === '') {
             $("#invalid-password-feedbak").text('Veuillez entrer un mot de passe');
             password.addClass('is-invalid');
-            errors++
+            errors++;
         }
-        if (passwordConfirm.val() === '') {
+        if (confirmPassword.val() === '') {
             $("#invalid-password-confirm-feedbak").text('Veuillez confirmer votre mot de passe');
-            passwordConfirm.addClass('is-invalid');
-            errors++
-        }
-        if (password.val() !== passwordConfirm.val()) {
+            confirmPassword.addClass('is-invalid');
+            errors++;
+        } else if (password.val() !== confirmPassword.val()) {
             $("#invalid-password-confirm-feedbak").text('Les mots de passe ne correspondent pas');
-            passwordConfirm.addClass('is-invalid');
-            errors++
+            confirmPassword.addClass('is-invalid');
+            errors++;
         }
 
         if (errors === 0) {
             hashPassword(password.val()).then(passwordHache => {
-                let user = {
+                let nouvelAgent = {
                     name: nom.val(),
-                    salaireJour: Number(salaire.val()),
                     email: email.val(),
                     password: passwordHache,
+                    salaireJour: Number(salaire.val()),
                     is_admin: false
                 };
-                registerUser(user)
-                console.log("Agent créé avec succès :", user);
+
+                // Enregistrer l'agent dans json-server
+                fetch("http://localhost:3000/users", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(nouvelAgent)
+                })
+                .then(response => response.json())
+                .then(() => {
+                    alert("Compte créé avec succès ! Vous pouvez maintenant vous connecter.");
+                    resetForms();
+                    switchTab('login');
+                })
+                .catch(erreur => {
+                    console.error("Erreur lors de l'inscription :", erreur);
+                    alert("Erreur de connexion au serveur.");
+                });
             });
         }
-        event.preventDefault();
-    })
+    });
 
-    var registerUser = (user) => {
-        $.ajax({
-            url: 'http://localhost:3000/users',
-            method: 'POST',
-            contentType: 'application/json; charset=UTF-8',
-            processData: false,
-            data: JSON.stringify(user),
-            success: (data) => {
-                alert('Agent enregistré avec succès');
-                switchTab("login")
-            },
-            error: (err) => {
-                console.error('Erreur inscription agent :', err);
-            }
-        })
-    }
-
-    var loginUser = (user) => {
-        $.ajax({
-            url: 'http://localhost:3000/users?email=' + user.email + '&password=' + user.password,
-            method: 'GET',
-            success: (data) => {
-                if (data.length > 0) {
-                    let user = data[0];
-                    console.log("Agent connecté avec succès :", user);
-                    localStorage.setItem("username", user.name);
-                    localStorage.setItem("userId", user.id);
-                    localStorage.setItem("is_admin", user.is_admin);
-                    window.location.href = "./pages/dashboard.html";
-                } else {
-                    $("#invalid-login-password-feedbak").text('Email ou mot de passe incorrect');
-                }
-            },
-            error: (err) => {
-                console.error('Erreur connexion :', err);
-            }
-        })
-    }
-
-    async function hashPassword(string) {
-        const utf8 = new TextEncoder().encode(string);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(bytes => bytes.toString(16).padStart(2, '0')).join('');
-        return hashHex;
-    }
-
-    var emailExist = (email) => {
-        let resultat;
-        $.ajax({
-            url: 'http://localhost:3000/users?email=' + email,
-            method: 'GET',
-            async: false,
-            success: (data) => {
-                resultat = data.length > 0;
-            }
-        });
-        return resultat;
-    }
-
+    // ============================================================
+    //  CONNEXION (LOGIN)
+    // ============================================================
     $("#loginBtn").click((event) => {
-        event.preventDefault();
-        let email = $("#l-email")
-        let password = $("#l-password")
-        let errors = 0
-        // reset validation messages
-        $(".feedbak").text('')
+        let errors = 0;
+        $(".feedbak").text('');
         $(".formItem").removeClass('is-invalid');
 
-        // validation email
+        let email = $("#l-email");
+        let password = $("#l-password");
         let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // validation email
         if (email.val() === '') {
             $("#invalid-login-email-feedbak").text('Veuillez entrer une adresse email');
             email.addClass('is-invalid');
-            errors++
+            errors++;
         } else if (!regexEmail.test(email.val())) {
             $("#invalid-login-email-feedbak").text('Veuillez entrer une adresse email valide');
             email.addClass('is-invalid');
-            errors++
+            errors++;
         }
 
         // validation mot de passe
         if (password.val() === '') {
             $("#invalid-login-password-feedbak").text('Veuillez entrer un mot de passe');
             password.addClass('is-invalid');
-            errors++
+            errors++;
         }
 
         if (errors === 0) {
             if ($("#remember").get(0).checked) {
                 localStorage.setItem("email", $("#l-email").val());
-                localStorage.setItem("password", $("#l-password").val());
+            } else {
+                localStorage.removeItem("email");
             }
+
             hashPassword(password.val()).then(passwordHache => {
                 let user = {
                     email: email.val(),
                     password: passwordHache
                 };
-                loginUser(user)
+                loginUser(user);
             });
         }
-    })
+    });
 
-    getIdentifiant = () => {
-        if (localStorage.getItem("email") != undefined && localStorage.getItem("password") != undefined) {
-            $("#l-email").val(localStorage.getItem("email"));
-        }
+    // ============================================================
+    //  FONCTION : EXECUTER LA CONNEXION
+    // ============================================================
+    function loginUser(user) {
+        fetch("http://localhost:3000/users")
+            .then(response => response.json())
+            .then(users => {
+                // Recherche de l'utilisateur avec email et password hashé correspondants
+                let trouve = users.find(u => u.email === user.email && u.password === user.password);
+
+                if (trouve) {
+                    // Sauvegarde des informations dans la session locale
+                    localStorage.setItem("username", trouve.name);
+                    localStorage.setItem("userId", trouve.id);
+                    localStorage.setItem("is_admin", trouve.is_admin.toString());
+
+                    // Redirection immédiate vers le Dashboard
+                    window.location.href = "dashboard.html";
+                } else {
+                    $("#invalid-login-password-feedbak").text("Email ou mot de passe incorrect !");
+                    $("#l-password").addClass('is-invalid');
+                }
+            })
+            .catch(erreur => {
+                console.error("Erreur lors de la connexion :", erreur);
+                alert("Impossible de se connecter au serveur. Vérifiez que json-server est bien lancé !");
+            });
+    }
+
+    // ============================================================
+    //  FONCTIONS UTILITAIRES (HASH & RESET)
+    // ============================================================
+    async function hashPassword(password) {
+        const msgBuffer = new TextEncoder().encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     resetForms = () => {
@@ -194,5 +193,5 @@ $(document).ready(() => {
         document.getElementById("loginForm").reset();
         $(".feedbak").text('');
         $(".formItem").removeClass('is-invalid');
-    }
-})
+    };
+});
