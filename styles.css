@@ -1,0 +1,145 @@
+/* 1. Had l-alwan l-asasiyya tqdri t-7ttihom f l-foq g3 dyal l-fechier */
+:root {
+    --primary-color: #1e3a8a;       /* Azraq Amni */
+    --dark-bg: #0f172a;             /* Slate Dark l l-navbar */
+    --accent-color: #eab308;         /* Sfar dyal l-alertes w badges */
+    --light-bg: #f8fafc;            /* Rmad bared l l-background */
+    --card-bg: #ffffff;
+}
+
+/* 2. Style dyal Navbar jdid */
+.navbar {
+    background-color: var(--dark-bg) !important;
+    border-bottom: 2px solid var(--primary-color);
+    padding: 0.8rem 0;
+}
+.navbar-brand small {
+    color: var(--accent-color) !important;
+    font-weight: 600;
+}
+
+/* 3. Style dyal l-Buttons */
+.btn-dark-main {
+    background-color: var(--primary-color) !important;
+    border: none;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+.btn-dark-main:hover {
+    background-color: #172554 !important; /* Azraq ghameq chwiya f l-hover */
+    transform: translateY(-1px);
+}
+
+.btn-outline-dark-main {
+    border: 2px solid var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    background: transparent;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+.btn-outline-dark-main:hover {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* 4. L-khwatef dyal les cartes (Features w Rules) */
+.feat-card, .rule-card {
+    background: var(--card-bg);
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+}
+.feat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+.feat-icon {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.rule-badge {
+    background-color: #fef9c3 !important;
+    color: #854d0e !important; /* L-Badges b l-louf sfar */
+}
+/* ==========================================================================
+   --- L-ALWAN JDAD DYAL L-NAVBAR, L-BUTTONS O L-CARDS ---
+   ========================================================================== */
+
+:root {
+    --primary-color: #1e3a8a;       /* Azraq Amni */
+    --dark-bg: #0f172a;             /* Slate Dark l l-navbar w footer */
+    --accent-color: #eab308;         /* Sfar dyal l-alertes w badges */
+    --light-bg: #f8fafc;            /* Rmad bared l l-background */
+    --card-bg: #ffffff;
+}
+
+/* 1. Navbar Style */
+.navbar {
+    background-color: var(--dark-bg) !important;
+    border-bottom: 2px solid var(--primary-color);
+    padding: 0.8rem 0;
+}
+.navbar-brand small {
+    color: var(--accent-color) !important;
+    font-weight: 600;
+}
+
+/* 2. Buttons Style (Main w Nav) */
+.btn-dark-main, .btn-dark-nav {
+    background-color: var(--primary-color) !important;
+    border: none !important;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.btn-dark-main:hover, .btn-dark-nav:hover {
+    background-color: #172554 !important;
+    transform: translateY(-1px);
+}
+
+.btn-outline-dark-main {
+    border: 2px solid var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    background: transparent !important;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.btn-outline-dark-main:hover {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* 3. Badges w Cards */
+.feat-card, .rule-card {
+    background: var(--card-bg);
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+}
+.feat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+.feat-icon {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.rule-badge {
+    background-color: #fef9c3 !important;
+    color: #854d0e !important;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}

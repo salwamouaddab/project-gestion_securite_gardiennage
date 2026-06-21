@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion Sécurité — Tableau de bord</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="../scripts/conntectedUser.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+
+<body>
+    <!-- ===================== NAVBAR ===================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                Gestion Sécurité
+                <small>Espace Agents</small>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav mx-auto gap-1">
+                    <li class="nav-item"><a class="nav-link active" href="./dashboard.html">Tableau de bord</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./rondes.html">Rondes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./rapports.html">Rapports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./agents.html">Agents</a></li>
+                </ul>
+                <div class="d-flex gap-2 mt-3 mt-lg-0">
+                    <div id="navbarNavDarkDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                    style="color:#aaa !important; font-size:0.85rem;"></a>
+                                <ul class="dropdown-menu dropdown-menu-dark"
+                                    aria-labelledby="navbarDarkDropdownMenuLink"
+                                    style="background-color:#1c1c1c; border:1px solid #2a2a2a; border-radius:6px;">
+                                    <li><a class="dropdown-item" href="#" style="color:#aaa; font-size:0.85rem;">Mon
+                                            profil</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="deconnexion()"
+                                            style="color:#aaa; font-size:0.85rem;">Se déconnecter</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- ===================== FIN NAVBAR ===================== -->
+
+    <div class="container mt-4">
+        <!-- Titre + message de bienvenue -->
+        <div class="mb-4">
+            <h2 style="font-family:'Cormorant Garamond',serif;">Tableau de bord</h2>
+            <!-- Le nom de l'utilisateur connecté sera injecté ici par JS -->
+            <p class="text-muted" style="font-size:.9rem;">
+                Bienvenue, <strong id="nomUtilisateur">...</strong>
+            </p>
+        </div>
+
+        <!-- ===== CARTES STATISTIQUES ===== -->
+        <!-- Chaque carte affiche un chiffre clé, rempli dynamiquement par JS -->
+        <div class="row g-3 mb-5">
+            <!-- Carte : Total rondes pointées -->
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 border rounded-3" style="background:#f9f9f9;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:.8rem;">Rondes pointées</p>
+                            <h3 id="stat-total" style="font-family:'Cormorant Garamond',serif;">—</h3>
+                        </div>
+                        <i class="bi bi-clipboard-check" style="font-size:1.5rem;color:#999;"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Carte : Rondes manquées -->
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 border rounded-3" style="background:#f9f9f9;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:.8rem;">Rondes manquées</p>
+                            <h3 id="stat-manquees" style="font-family:'Cormorant Garamond',serif;">—</h3>
+                        </div>
+                        <i class="bi bi-x-circle" style="font-size:1.5rem;color:#c0392b;"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Carte : Incidents signalés -->
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 border rounded-3" style="background:#f9f9f9;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:.8rem;">Incidents signalés</p>
+                            <h3 id="stat-incidents" style="font-family:'Cormorant Garamond',serif;">—</h3>
+                        </div>
+                        <i class="bi bi-exclamation-triangle" style="font-size:1.5rem;color:#f0a500;"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Carte : Incidents validés -->
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 border rounded-3" style="background:#f9f9f9;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:.8rem;">Incidents validés</p>
+                            <h3 id="stat-valides" style="font-family:'Cormorant Garamond',serif;">—</h3>
+                        </div>
+                        <i class="bi bi-shield-check" style="font-size:1.5rem;color:#27ae60;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ===== FIN CARTES ===== -->
+
+        <div class="row g-4">
+            <!-- ===== DERNIÈRES RONDES ===== -->
+            <div class="col-lg-7">
+                <h5 class="mb-3" style="font-family:'Cormorant Garamond',serif;">Dernières rondes pointées</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead style="background:#f5f5f5;">
+                            <tr>
+                                <th>Date</th>
+                                <th>Agent</th>
+                                <th>Rondes</th>
+                                <th>Incident</th>
+                            </tr>
+                        </thead>
+                        <!-- Rempli par JS avec les 5 dernières rondes -->
+                        <tbody id="tableDernieresRondes">
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-3">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a href="./rondes.html" style="font-size:.85rem;">Voir toutes les rondes →</a>
+            </div>
+            <!-- ===== CLASSEMENT AGENTS ===== -->
+            <div class="col-lg-5">
+                <h5 class="mb-3" style="font-family:'Cormorant Garamond',serif;">Agents — fiabilité des rondes</h5>
+                <!-- Liste remplie par JS -->
+                <div id="listeAgents">
+                    <p class="text-muted" style="font-size:.85rem;">Chargement...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/dashboard.js"></script>
+</body>
+
+</html>

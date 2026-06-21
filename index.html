@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion Sécurité — Espace Agents</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./scripts/conntectedUser.js"></script>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                Gestion Sécurité
+                <small>Espace Agents</small>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav mx-auto gap-1">
+                    <li class="nav-item"><a class="nav-link" href="./pages/dashboard.html">Tableau de bord</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./pages/rondes.html">Rondes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./pages/rapports.html">Rapports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./pages/agents.html">Agents</a></li>
+                </ul>
+                <div class="d-flex gap-2 mt-3 mt-lg-0">
+                    <button class="btn-dark-nav" id="connexionBtn" onclick="getIdentifiant()" data-bs-toggle="modal"
+                        data-bs-target="#authModal">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Connexion
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false" style="color:#aaa !important; font-size:0.85rem;">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink"
+                                    style="background-color:#1c1c1c; border:1px solid #2a2a2a; border-radius:6px;">
+                                    <li><a class="dropdown-item" href="#" style="color:#aaa; font-size:0.85rem;">Mon profil</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="deconnexion()"
+                                            style="color:#aaa; font-size:0.85rem;">Se déconnecter</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" style="background: #fafafa; padding: 5rem 0;">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <p class="text-uppercase fade-up" style="font-size:.72rem;letter-spacing:.12em;color:#64748b;font-weight:600;">
+                        Plateforme interne · Société de gardiennage
+                    </p>
+                    <h1 class="fade-up d1" style="font-family:'DM Sans',sans-serif; font-weight:700; color:#0f172a;">Suivi des rondes<br />et des agents de sécurité</h1>
+                    <div class="hero-divider fade-up d2" style="width:50px; height:3px; background:#1e3a8a; margin:1.5rem 0;"></div>
+                    <p class="fade-up d2" style="color:#475569;">
+                        Pointez les rondes de nuit, suivez les incidents signalés, et calculez automatiquement le
+                        salaire journalier de chaque agent selon les pénalités et les primes de risque.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap mt-4 fade-up d3">
+                        <button class="btn-dark-main" data-bs-toggle="modal" data-bs-target="#authModal">
+                            <i class="bi bi-person-plus me-1"></i>Créer un compte
+                        </button>
+                        <button class="btn-outline-dark-main" data-bs-toggle="modal" data-bs-target="#authModal"
+                            onclick="switchTab('login')">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Se connecter
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6 fade-up d2">
+                    <div class="row g-3">
+                        <!-- Box 1 -->
+                        <div class="col-6">
+                            <div class="p-4 border rounded-3 text-center" style="background:#f0f4f8; border-color:#d9e2ec !important;">
+                                <div style="font-family:'DM Sans',sans-serif;font-size:2.2rem;font-weight:700;color:#1e3a8a;">
+                                    8</div>
+                                <div style="font-size:.8rem;color:#486581;margin-top:.2rem;font-weight:500;">Rondes / nuit attendues</div>
+                            </div>
+                        </div>
+                        <!-- Box 2 -->
+                        <div class="col-6">
+                            <div class="p-4 border rounded-3 text-center" style="background:#fff1f2; border-color:#ffe4e6 !important;">
+                                <div style="font-family:'DM Sans',sans-serif;font-size:2.2rem;font-weight:700;color:#e11d48;">
+                                    -5%</div>
+                                <div style="font-size:.8rem;color:#9f1239;margin-top:.2rem;font-weight:500;">Par ronde oubliée</div>
+                            </div>
+                        </div>
+                        <!-- Box 3 -->
+                        <div class="col-6">
+                            <div class="p-4 border rounded-3 text-center" style="background:#f0fdf4; border-color:#dcfce7 !important;">
+                                <div style="font-family:'DM Sans',sans-serif;font-size:2.2rem;font-weight:700;color:#16a34a;">
+                                    +25%</div>
+                                <div style="font-size:.8rem;color:#166534;margin-top:.2rem;font-weight:500;">Prime incident validé</div>
+                            </div>
+                        </div>
+                        <!-- Box 4 -->
+                        <div class="col-6">
+                            <div class="p-4 border rounded-3 text-center" style="background:#fef9c3; border-color:#fef08a !important;">
+                                <div style="font-family:'DM Sans',sans-serif;font-size:2.2rem;font-weight:700;color:#ca8a04;">
+                                    1/4</div>
+                                <div style="font-size:.8rem;color:#854d0e;margin-top:.2rem;font-weight:500;">Journée de prime de risque</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" style="padding: 5rem 0;">
+        <div class="container">
+            <h2 class="mb-1" style="font-size:1.9rem; font-family:'DM Sans',sans-serif; font-weight:700;">Fonctionnalités clés</h2>
+            <p style="font-size:.85rem;color:#64748b;margin-bottom:2.5rem;">Tout ce dont le poste de sécurité a besoin pour le suivi quotidien.</p>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feat-card">
+                        <div class="feat-icon"><i class="bi bi-clipboard-check"></i></div>
+                        <h6 style="font-weight:600;">Pointage des rondes</h6>
+                        <p style="color:#64748b; font-size:0.85rem;">Enregistrez le nombre de rondes effectuées chaque nuit, par agent.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feat-card">
+                        <div class="feat-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                        <h6 style="font-weight:600;">Gestion des incidents</h6>
+                        <p style="color:#64748b; font-size:0.85rem;">Signalez un incident réel ; il devra être validé par l'administrateur.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feat-card">
+                        <div class="feat-icon"><i class="bi bi-calculator"></i></div>
+                        <h6 style="font-weight:600;">Calcul automatique</h6>
+                        <p style="color:#64748b; font-size:0.85rem;">Salaire journalier recalculé selon les rondes manquées et les primes.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feat-card">
+                        <div class="feat-icon"><i class="bi bi-people"></i></div>
+                        <h6 style="font-weight:600;">Gestion des agents</h6>
+                        <p style="color:#64748b; font-size:0.85rem;">Modification du salaire journalier par l'administrateur uniquement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RÈGLES MÉTIER -->
+    <section class="rules-section" style="padding: 5rem 0; background:#f8fafc;">
+        <div class="container">
+            <h2 class="mb-1" style="font-size:1.9rem; font-family:'DM Sans',sans-serif; font-weight:700;">Règles de calcul du salaire</h2>
+            <p style="font-size:.85rem;color:#64748b;margin-bottom:2.5rem;">Logique appliquée automatiquement à chaque journée pointée.</p>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-4">
+                    <div class="rule-card">
+                        <div class="rule-badge">Rondes oubliées</div>
+                        <h6 style="font-weight:600; margin-top:0.5rem;">8 rondes attendues / nuit</h6>
+                        <p style="color:#64748b; font-size:0.85rem;">Chaque ronde non effectuée retire 5% du salaire journalier de l'agent.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="rule-card">
+                        <div class="rule-badge">Incident</div>
+                        <h6 style="font-weight:600; margin-top:0.5rem;">Prime de risque</h6>
+                        <p style="color:#64748b; font-size:0.85rem;">Si l'agent signale un incident réel et qu'il est validé par l'admin, il reçoit une prime égale à 1/4 (25%) de sa journée.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="rule-card">
+                        <div class="rule-badge">Validation</div>
+                        <h6 style="font-weight:600; margin-top:0.5rem;">Contrôle Admin</h6>
+                        <p style="color:#64748b; font-size:0.85rem;">Seul l'administrateur peut valider un incident et modifier le salaire d'un agent.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background:#0f172a; color:#94a3b8; padding:2rem 0; font-size:0.85rem;">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span style="color:#fff; font-weight:600; font-family:'DM Sans',sans-serif;">Gestion Sécurité</span>
+            <span>© 2025 · Plateforme interne · Tous droits réservés</span>
+        </div>
+    </footer>
+
+    <!-- MODAL AUTH -->
+    <div class="modal fade" id="authModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header px-4 pt-4 pb-0 border-0">
+                    <h5 class="modal-title" style="font-weight:700;">Accès à l'espace sécurité</h5>
+                    <button type="button" class="btn-close" onclick="resetForms()" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pb-4">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs mb-3" id="authTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="tab-login" onclick="switchTab('login')">Connexion</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="tab-register" onclick="switchTab('register')">Inscription</button>
+                        </li>
+                    </ul>
+                    <!-- LOGIN -->
+                    <div id="pane-login">
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label class="form-label">Adresse email</label>
+                                <input type="email" id="l-email" class="form-control formItem" placeholder="agent@securite.ma" />
+                                <span id="invalid-login-email-feedbak" class="text-danger feedbak"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mot de passe</label>
+                                <input type="password" id="l-password" class="form-control formItem" placeholder="••••••••" />
+                                <span id="invalid-login-password-feedbak" class="text-danger feedbak"></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="checkbox" id="remember" />
+                                    <label class="form-check-label" for="remember" style="font-size:.82rem;">Se souvenir de moi</label>
+                                </div>
+                                <a href="#" style="font-size:.82rem;color:#64748b;text-decoration:none;">Mot de passe oublié ?</a>
+                            </div>
+                            <button class="btn-dark-main w-100" id="loginBtn">Se connecter</button>
+                        </form>
+                    </div>
+                    <!-- REGISTER -->
+                    <div id="pane-register" style="display:none;">
+                        <form id="registerForm" action="#">
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Nom complet</label>
+                                    <input type="text" id="r-nom" name="r-nom" class="form-control formItem" placeholder="Mohamed" />
+                                    <span id="invalid-nom-feedbak" class="text-danger feedbak"></span>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Salaire (DH)</label>
+                                    <input type="number" id="r-salaire" name="r-salaire" class="form-control formItem" min="0"
+                                        placeholder="Ex: 120" />
+                                    <span id="invalid-salaire-feedbak" class="text-danger feedbak"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Adresse email</label>
+                                <input type="email" id="r-email" name="r-email" class="form-control formItem"
+                                    placeholder="agent@securite.ma" />
+                                <span id="invalid-email-feedbak" class="text-danger feedbak"></span>
+                            </div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Mot de passe</label>
+                                    <input type="password" class="form-control formItem" id="r-password" placeholder="••••••••" />
+                                    <span id="invalid-password-feedbak" class="text-danger feedbak"></span>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Confirmation</label>
+                                    <input type="password" class="form-control" id="r-password-confirm" placeholder="••••••••" />
+                                    <span id="invalid-password-confirm-feedbak" class="text-danger feedbak"></span>
+                                </div>
+                            </div>
+                            <button class="btn-dark-main w-100" id="registerBtn">Créer mon compte</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function switchTab(tab) {
+            const isLogin = tab === 'login';
+            document.getElementById('pane-login').style.display = isLogin ? 'block' : 'none';
+            document.getElementById('pane-register').style.display = isLogin ? 'none' : 'block';
+            document.getElementById('tab-login').classList.toggle('active', isLogin);
+            document.getElementById('tab-register').classList.toggle('active', !isLogin);
+        }
+    </script>
+    <script src="./scripts/index.js"></script>
+</body>
+
+</html>

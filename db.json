@@ -1,0 +1,95 @@
+{
+  "users": [
+    {
+      "id": "u001",
+      "name": "EL FASSI Karim",
+      "email": "kelfassi@gmail.com",
+      "password": "6d219f040ea5a17849892262a3f8c789c53527b87f7c6f0e7f7d93efb85fe7ba",
+      "salaireJour": 200,
+      "is_admin": true
+    },
+    {
+      "id": "u002",
+      "name": "Mohamed Tahiri",
+      "email": "mtahiri@gmail.com",
+      "password": "6d219f040ea5a17849892262a3f8c789c53527b87f7c6f0e7f7d93efb85fe7ba",
+      "salaireJour": 120,
+      "is_admin": false
+    },
+    {
+      "id": "u003",
+      "name": "Youssef Amrani",
+      "email": "yamrani@gmail.com",
+      "password": "6d219f040ea5a17849892262a3f8c789c53527b87f7c6f0e7f7d93efb85fe7ba",
+      "salaireJour": 120,
+      "is_admin": false
+    },
+    {
+      "id": "u004",
+      "name": "Hicham Bennani",
+      "email": "hbennani@gmail.com",
+      "password": "6d219f040ea5a17849892262a3f8c789c53527b87f7c6f0e7f7d93efb85fe7ba",
+      "salaireJour": 130,
+      "is_admin": false
+    },
+    {
+      "name": "saloua",
+      "salaireJour": 234,
+      "email": "SDFGHr@gmail.com",
+      "password": "6d219f040ea5a17849892262a3f8c789c53527b87f7c6f0e7f7d93efb85fe7ba",
+      "is_admin": false,
+      "id": "iZv1ScCUQuQ"
+    }
+  ],
+  "rondes": [
+    {
+      "id": "r001",
+      "agentId": "u002",
+      "nbEffectue": 8,
+      "nbIncidents": 0,
+      "incidentValide": false,
+      "date": "2025-06-15"
+    },
+    {
+      "id": "r002",
+      "agentId": "u002",
+      "nbEffectue": 6,
+      "nbIncidents": 1,
+      "incidentValide": true,
+      "date": "2025-06-16"
+    },
+    {
+      "id": "r003",
+      "agentId": "u003",
+      "nbEffectue": 8,
+      "nbIncidents": 0,
+      "incidentValide": false,
+      "date": "2025-06-15"
+    },
+    {
+      "id": "r004",
+      "agentId": "u003",
+      "nbEffectue": 5,
+      "nbIncidents": 0,
+      "incidentValide": false,
+      "date": "2025-06-16"
+    },
+    {
+      "id": "r005",
+      "agentId": "u004",
+      "nbEffectue": 7,
+      "nbIncidents": 1,
+      "incidentValide": false,
+      "date": "2025-06-17"
+    },
+    {
+      "id": "r006",
+      "agentId": "u004",
+      "nbEffectue": 8,
+      "nbIncidents": 1,
+      "incidentValide": true,
+      "date": "2025-06-18"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
